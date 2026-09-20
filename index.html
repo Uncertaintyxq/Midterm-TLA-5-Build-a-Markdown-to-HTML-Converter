@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Markformer — Markdown to HTML</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="top">
+  <span class="mark">Markformer</span>
+  <div class="actions">
+    <button class="pill primary" id="copyBtn" type="button">Copy HTML</button>
+
+    <div class="menu-wrap">
+      <button class="pill glass" id="exportBtn" type="button" aria-haspopup="true" aria-expanded="false">Export ▾</button>
+      <div class="menu glass" id="exportMenu">
+        <button type="button" id="downloadHtmlBtn">Download HTML<span class="hint">.html file</span></button>
+        <button type="button" id="downloadMdBtn">Download Markdown<span class="hint">.md file</span></button>
+        <button type="button" id="downloadPngBtn">Save as image<span class="hint">.png of the preview</span></button>
+        <button type="button" id="printBtn">Print / Save as PDF<span class="hint">opens the print dialog</span></button>
+      </div>
+    </div>
+
+    <div class="menu-wrap">
+      <button class="pill glass" id="urlImgBtn" type="button" aria-haspopup="true" aria-expanded="false">URL → Image</button>
+      <div class="menu glass panel-menu" id="urlImgMenu">
+        <label for="urlImgInput" class="panel-label">Image URL — any site</label>
+        <input type="url" id="urlImgInput" placeholder="https://example.com/photo.jpg" />
+        <button type="button" class="pill primary panel-btn" id="urlImgFetch">Fetch image</button>
+        <div id="urlImgResult" class="url-img-result" hidden>
+          <img id="urlImgPreview" alt="Fetched preview" />
+          <div class="url-img-actions">
+            <button type="button" class="ghost" id="urlImgInsert">Insert into document</button>
+            <button type="button" class="ghost" id="urlImgDownload">Download file</button>
+          </div>
+        </div>
+        <p id="urlImgError" class="url-img-error" hidden></p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="toolbar glass">
+  <div class="field">
+    <label for="fontSelect">Font</label>
+    <select id="fontSelect">
+      <option value='"Instrument Serif", Georgia, serif'>Instrument Serif</option>
+      <option value='"Space Grotesk", system-ui, sans-serif'>Space Grotesk</option>
+      <option value='"JetBrains Mono", monospace'>JetBrains Mono</option>
+      <option value='Georgia, serif'>Georgia</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Size</label>
+    <div class="size-control">
+      <button type="button" id="sizeDown" aria-label="Decrease preview font size">–</button>
+      <span id="sizeValue">17px</span>
+      <button type="button" id="sizeUp" aria-label="Increase preview font size">+</button>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Color</label>
+    <div class="swatches" id="swatches"></div>
+  </div>
+
+  <div class="field">
+    <div class="segmented" role="group" aria-label="View mode">
+      <button type="button" id="viewRendered" aria-pressed="true">Rendered</button>
+      <button type="button" id="viewRaw" aria-pressed="false">HTML</button>
+    </div>
+  </div>
+
+  <div class="toolbar-actions">
+    <button class="ghost" id="sampleBtn" type="button">Sample</button>
+    <button class="ghost" id="clearBtn" type="button">Clear</button>
+  </div>
+</div>
+
+<div class="panes">
+  <section class="pane clay-inset">
+    <div class="pane-head">
+      <span class="label">Editor</span>
+      <div class="right">
+        <button class="ghost" id="pasteBtn" type="button" style="padding:0.2rem 0.5rem;">Paste</button>
+        <button class="ghost" id="importBtn" type="button" style="padding:0.2rem 0.5rem;">Import .md</button>
+        <span class="count" id="charCount">0 chars</span>
+      </div>
+    </div>
+    <textarea id="editor" spellcheck="false" aria-label="Markdown input"></textarea>
+  </section>
+
+  <section class="pane clay-inset">
+    <div class="pane-head">
+      <span class="label">Preview</span>
+    </div>
+    <div id="preview" aria-label="Rendered HTML output"></div>
+  </section>
+</div>
+
+<div class="stat-row">
+  <span class="stat-chip"><b id="statWords">0</b> words</span>
+  <span class="stat-chip"><b id="statChars">0</b> characters</span>
+  <span class="stat-chip"><b id="statTime">0 min</b> read</span>
+</div>
+
+<input type="file" id="fileInput" accept=".md,.markdown,.txt,text/markdown,text/plain" />
+<div class="toast glass" id="toast"></div>
+
+<script src="script.js" defer></script>
+</body>
+</html>
